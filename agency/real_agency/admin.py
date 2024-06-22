@@ -33,22 +33,27 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(AllObjectsCategories)
 class AllObjectsCategoriesAdmin(admin.ModelAdmin):
-    list_display = ('id', 'category', 'slug', 'is_out_city', 'category_icon')
+    list_display = ('id', 'category', 'is_out_city', 'category_icon')
     list_filter = ('is_out_city',)
     search_fields = ('slug',)
     prepopulated_fields = {'slug': ('category',)}
+    save_on_top = True
 
 
 @admin.register(InCityRegion)
 class InCityRegionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'region', 'slug')
-    search_fields = ('slug',)
+    list_display = ('id', 'region',)
+    search_fields = ('region',)
+    prepopulated_fields = {'slug': ('region',)}
+    save_on_top = True
 
 
 @admin.register(InCityMetro)
 class InCityMetroAdmin(admin.ModelAdmin):
-    list_display = ('id', 'metro', 'slug')
+    list_display = ('id', 'metro',)
     search_fields = ('slug',)
+    prepopulated_fields = {'slug': ('metro',)}
+    save_on_top = True
 
 
 @admin.register(InCityRoomAmount)
