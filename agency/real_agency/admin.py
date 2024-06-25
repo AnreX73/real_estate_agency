@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
 from .models import User, AllObjectsCategories, InCityRegion, InCityMetro, InCityRoomAmount, InCityRepairType, InCityBalconyType, InCityLiftType, InCityRoofType, OutCityDistanceToCity, OutCityOwnershipType, OutCityElectricity, OutCityWaterSupply, OutCityGasSupply, OutCityBathRoom, OutCityAsphaltRoad, OutCityShopNearly, OutCityWaterNearly, OutCityForestNearly, BathroomType, InCityObject, OutCityObject, CommercialObject
 
@@ -33,11 +34,17 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(AllObjectsCategories)
 class AllObjectsCategoriesAdmin(admin.ModelAdmin):
-    list_display = ('id', 'category', 'is_out_city', 'category_icon')
+    list_display = ('id', 'category', 'is_out_city', 'gethtmlPhoto')
     list_filter = ('is_out_city',)
     search_fields = ('slug',)
     prepopulated_fields = {'slug': ('category',)}
     save_on_top = True
+
+    def gethtmlPhoto(self, picture):
+        if picture.category_icon:
+            return mark_safe(f"<img src='{picture.category_icon.url}' width=50>")
+
+    gethtmlPhoto.short_description = 'миниатюра'
 
 
 @admin.register(InCityRegion)
