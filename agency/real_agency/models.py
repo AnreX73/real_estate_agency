@@ -154,18 +154,7 @@ class InCityRoofType(models.Model):
 
 #загородная недвижимость
 
-#расстояние до города
-class OutCityDistanceToCity(models.Model):
-    distance_to_city = models.CharField(max_length=255, verbose_name="Расстояние до города")
-    distance_to_city_int = models.IntegerField(verbose_name="Расстояние до города цифрой")
 
-
-    def __str__(self):
-        return self.distance_to_city
-
-    class Meta:
-        verbose_name = "Расстояние до города"
-        verbose_name_plural = "Расстояния до города"
 
 # форма собственности
 class OutCityOwnershipType(models.Model):
@@ -376,14 +365,12 @@ class InCityObject(AllObjectsAbstract):
 
 
 class OutCityObject(AllObjectsAbstract):
-    distance_to_city = models.ForeignKey(
-        OutCityDistanceToCity, on_delete=models.CASCADE, verbose_name="Расстояние до города"
-    )
-    land_square = models.PositiveIntegerField(blank=True, verbose_name='площадь участка')
+    distance_to_city_int = models.PositiveIntegerField(blank=True, null=True, verbose_name="Расстояние до города в км")
+    land_square = models.PositiveIntegerField(blank=True,null=True, verbose_name='площадь участка в сотках', help_text='в сотках')
     type_of_ownership = models.ForeignKey(
         OutCityOwnershipType, on_delete=models.CASCADE, verbose_name="Вид собственности"
     )
-    square = models.PositiveIntegerField(blank=True, verbose_name='площадь дома', help_text='в кв.м')
+    square = models.PositiveIntegerField(blank=True,null=True, verbose_name='площадь дома', help_text='в кв.м')
     obj_roof = models.ForeignKey(InCityRoofType, on_delete=models.CASCADE, verbose_name="тип постройки")
     bathroom = models.ForeignKey(BathroomType, on_delete=models.CASCADE, verbose_name="Санузел")
     electricity = models.ForeignKey(OutCityElectricity, on_delete=models.CASCADE, verbose_name="Электроснабжение")

@@ -82,9 +82,9 @@ WSGI_APPLICATION = 'agency.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'real_agency',
+        'NAME': 'real_estate_agency',
         'USER': 'AnreX',
-        'PASSWORD': 'll010800ll',
+        'PASSWORD': 'l010800l',
         'HOST': 'localhost',  # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }

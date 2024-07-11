@@ -1,14 +1,13 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from .models import User, AllObjectsCategories, InCityRegion, InCityMetro, InCityRoomAmount, InCityRepairType, InCityBalconyType, InCityLiftType, InCityRoofType, OutCityDistanceToCity, OutCityOwnershipType, OutCityElectricity, OutCityWaterSupply, OutCityGasSupply, OutCityBathRoom, OutCityAsphaltRoad, OutCityShopNearly, OutCityWaterNearly, OutCityForestNearly, BathroomType, InCityObject, OutCityObject, CommercialObject
+from .models import User, AllObjectsCategories, InCityRegion, InCityMetro, InCityRoomAmount, InCityRepairType, InCityBalconyType, InCityLiftType, InCityRoofType,  OutCityOwnershipType, OutCityElectricity, OutCityWaterSupply, OutCityGasSupply, OutCityBathRoom, OutCityAsphaltRoad, OutCityShopNearly, OutCityWaterNearly, OutCityForestNearly, BathroomType, InCityObject, OutCityObject, CommercialObject
 
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = (
         'id',
-        'password',
         'last_login',
         'is_superuser',
         'username',
@@ -22,7 +21,6 @@ class UserAdmin(admin.ModelAdmin):
         'is_estate_agent',
     )
     list_filter = (
-        'last_login',
         'is_superuser',
         'is_staff',
         'is_active',
@@ -90,9 +88,7 @@ class InCityRoofTypeAdmin(admin.ModelAdmin):
     list_display = ('id', 'roof')
 
 
-@admin.register(OutCityDistanceToCity)
-class OutCityDistanceToCityAdmin(admin.ModelAdmin):
-    list_display = ('id', 'distance_to_city', 'distance_to_city_int')
+
 
 
 @admin.register(OutCityOwnershipType)
@@ -213,7 +209,7 @@ class OutCityObjectAdmin(admin.ModelAdmin):
         'sale_or_rent',
         'year',
         'content',
-        'distance_to_city',
+        'distance_to_city_int',
         'land_square',
         'type_of_ownership',
         'square',
@@ -235,7 +231,7 @@ class OutCityObjectAdmin(admin.ModelAdmin):
         'object_category',
         'estate_agent',
         'is_hot',
-        'distance_to_city',
+        'distance_to_city_int',
         'type_of_ownership',
         'obj_roof',
         'bathroom',
