@@ -168,107 +168,7 @@ class OutCityOwnershipType(models.Model):
         verbose_name = "Форма собственности"
         verbose_name_plural = "Формы собственности"
 
-# электроснабжение
-class OutCityElectricity(models.Model):
-    electricity = models.CharField(max_length=255, verbose_name="Электроснабжение")
 
-
-    def __str__(self):
-        return self.electricity
-
-    class Meta:
-        verbose_name = "Электроснабжение"
-        verbose_name_plural = "Электроснабжение"
-
-# водоснабжение
-class OutCityWaterSupply(models.Model):
-    water_supply = models.CharField(max_length=255, verbose_name="Водоснабжение")
-
-
-    def __str__(self):
-        return self.water_supply
-
-    class Meta:
-        verbose_name = "Водоснабжение"
-        verbose_name_plural = "Водоснабжение"
-
-# газоснабжение
-class OutCityGasSupply(models.Model):
-    gas_supply = models.CharField(max_length=255, verbose_name="Газоснабжение")
-
-
-    def __str__(self):
-        return self.gas_supply
-
-    class Meta:
-        verbose_name = "Газоснабжение"
-        verbose_name_plural = "Газоснабжение"
-
-# баня
-class OutCityBathRoom(models.Model):
-    bath_room = models.CharField(max_length=255, verbose_name="Баня")
-
-
-    def __str__(self):
-        return self.bath_room
-
-    class Meta:
-        verbose_name = "Баня"
-        verbose_name_plural = "Баня"
-
-
-
-# Асфальтовая дорога
-class OutCityAsphaltRoad(models.Model):
-    asphalt_road = models.CharField(max_length=255, verbose_name="Асфальтовая дорога")
-
-
-    def __str__(self):
-        return self.asphalt_road
-
-    class Meta:
-        verbose_name = "Асфальтовая дорога"
-        verbose_name_plural = "Асфальтовая дорога"
-
-
-
-# Магазин рядом
-class OutCityShopNearly(models.Model):
-    title = models.CharField(max_length=55, verbose_name='Магазин рядом')
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        verbose_name = 'Магазин рядом'
-        verbose_name_plural = 'Магазин рядом'
-        ordering = ['id']
-
-
-# Водоем рядом
-class OutCityWaterNearly(models.Model):
-    title = models.CharField(max_length=55, verbose_name='Водоем рядом')
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        verbose_name = 'Водоем рядом'
-        verbose_name_plural = 'Водоем рядом'
-        ordering = ['id']
-
-
-# Лес рядом
-class OutCityForestNearly(models.Model):
-    title = models.CharField(max_length=55, verbose_name='Лес рядом')
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        verbose_name = 'Лес рядом'
-        verbose_name_plural = 'Лес рядом'
-        ordering = ['id']
 
 
 class BathroomType(models.Model):
@@ -373,14 +273,13 @@ class OutCityObject(AllObjectsAbstract):
     square = models.PositiveIntegerField(blank=True,null=True, verbose_name='площадь дома', help_text='в кв.м')
     obj_roof = models.ForeignKey(InCityRoofType, on_delete=models.CASCADE, verbose_name="тип постройки")
     bathroom = models.ForeignKey(BathroomType, on_delete=models.CASCADE, verbose_name="Санузел")
-    electricity = models.ForeignKey(OutCityElectricity, on_delete=models.CASCADE, verbose_name="Электроснабжение")
-    water = models.ForeignKey(OutCityWaterSupply, on_delete=models.CASCADE, verbose_name="Водоснабжение")
-    gas = models.ForeignKey(OutCityGasSupply, on_delete=models.CASCADE, verbose_name="Газоснабжение")
-    bath = models.ForeignKey(OutCityBathRoom, on_delete=models.CASCADE, verbose_name="Баня")
-    asphalt_road = models.ForeignKey(OutCityAsphaltRoad, on_delete=models.CASCADE, verbose_name="Асфальтовая дорога")
-    shop_nearly = models.ForeignKey(OutCityShopNearly, on_delete=models.CASCADE, verbose_name="Магазин рядом")
-    water_nearly = models.ForeignKey(OutCityWaterNearly, on_delete=models.CASCADE, verbose_name="Водоем рядом")
-    forest_nearly = models.ForeignKey(OutCityForestNearly, on_delete=models.CASCADE, verbose_name="Лес рядом")
+    electricity = models.BooleanField(default=False, verbose_name="Электроснабжение")
+    water = models.BooleanField(default=False,verbose_name="Водоснабжение")
+    gas = models.BooleanField(default=False, verbose_name="Газоснабжение")
+    bath = models.BooleanField(default=False, verbose_name="Баня")
+    shop_nearly = models.BooleanField(default=False,verbose_name="Магазин рядом")
+    water_nearly = models.BooleanField(default=False, verbose_name="Водоем рядом")
+    forest_nearly = models.BooleanField(default=False, verbose_name="Лес рядом")
 
 
     class Meta:
@@ -389,6 +288,14 @@ class OutCityObject(AllObjectsAbstract):
         ordering = ['id']
 
 class CommercialObject(AllObjectsAbstract):
+    class ComercObjectType(models.TextChoices):
+        TRADEAREA = 'Торговая площадь', 'Торговая площадь'
+        OFFICE = 'Офис', 'Офис'
+        STOCK = 'Склад', 'Склад'
+        FREEASSIGNMENT = 'Свободное назначение', 'Свободное назначение'
+        MANUFACTURE = 'Производство', 'Производство'
+        BUILDING = 'Здание', 'Здание'
+        OTHER = 'Другое', 'Другое'
     obj_square = models.PositiveIntegerField(blank=True, null=True, verbose_name="Площадь")
     city_region = models.ForeignKey(
         InCityRegion, on_delete=models.CASCADE, verbose_name="Район города"
@@ -396,6 +303,9 @@ class CommercialObject(AllObjectsAbstract):
     metro = models.ForeignKey(
         InCityMetro, on_delete=models.CASCADE, verbose_name="Метро"
     )
+    commercу_object_type = models.CharField(
+        max_length=255, choices=ComercObjectType.choices,default=ComercObjectType.OTHER, verbose_name="Тип объекта коммерческого недвижимости"
+    ) 
 
     class Meta:
         verbose_name = 'коммерческий объект'
@@ -403,7 +313,52 @@ class CommercialObject(AllObjectsAbstract):
         ordering = ['id']
 
 
+class SiteGraphicObjects(models.Model):
+    name = models.CharField(max_length=255, verbose_name="Название")
+    image = models.ImageField(upload_to="help_objects/", verbose_name="Изображение")
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
 
+
+    class Meta:
+        verbose_name = 'графический объект'
+        verbose_name_plural = 'графические объекты'
+        ordering = ['id']
+
+
+class Gallery(models.Model):
+    name = models.CharField(max_length=255, verbose_name="Название")
+    image = models.ImageField(upload_to="gallery/", verbose_name="Изображение")
+    is_published = models.BooleanField(default=True, verbose_name="Опубликовано")
+    
+
+
+    class Meta:
+        abstract = True
+
+class InCityGallery(Gallery):
+    obj = models.ForeignKey(InCityObject, on_delete=models.CASCADE, verbose_name="Объект")
+
+    class Meta:
+        verbose_name = 'галерея'
+        verbose_name_plural = 'галереи'
+        ordering = ['id']
+
+class OutCityGallery(Gallery):
+    obj = models.ForeignKey(OutCityObject, on_delete=models.CASCADE, verbose_name="Объект")
+
+    class Meta:
+        verbose_name = 'галерея'
+        verbose_name_plural = 'галереи'
+        ordering = ['id']
+
+
+class CommercialGallery(Gallery):
+    obj = models.ForeignKey(CommercialObject, on_delete=models.CASCADE, verbose_name="Объект")
+
+    class Meta:
+        verbose_name = 'галерея'
+        verbose_name_plural = 'галереи'
+        ordering = ['id']
 
 
 
